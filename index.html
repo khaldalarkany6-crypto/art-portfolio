@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>معرض لوحاتي الفنية | Art Portfolio</title>
 
-    <!-- إعدادات المعاينة والصورة لـ WhatsApp ومواقع التواصل (Open Graph) -->
+    <!-- وسوم المعاينة لـ WhatsApp ومواقع التواصل -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="معرض لوحاتي الفنية | Art Portfolio">
     <meta property="og:description" content="مجموعة من فواصل الكتب، الاسكتشات، والأعمال اليدوية الفنية.">
     <meta property="og:image" content="https://khaldalarkany6-crypto.github.io/art-portfolio/starry.jpg">
     <meta property="og:url" content="https://khaldalarkany6-crypto.github.io/art-portfolio/">
-
-    <!-- دعم منصة X (تويتر سابقاً) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://khaldalarkany6-crypto.github.io/art-portfolio/starry.jpg">
 
@@ -27,6 +25,7 @@
             --text-color: #e6edf3;
             --text-muted: #8b949e;
             --whatsapp-color: #25d366;
+            --nav-bg: rgba(13, 15, 18, 0.85);
         }
 
         * {
@@ -42,9 +41,166 @@
             padding-bottom: 60px;
         }
 
+        /* الشريط العلوي الثابت */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .nav-brand {
+            font-size: 1.15rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        /* شريط البحث المنبثق */
+        .search-container {
+            display: none;
+            padding: 15px 20px 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-container.active {
+            display: block;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        /* القائمة الجانبية (Drawer Sidebar) */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.65);
+            z-index: 1000;
+        }
+
+        .sidebar-overlay.open {
+            display: block;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -290px;
+            width: 280px;
+            height: 100%;
+            background: #12161d;
+            z-index: 1001;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+            transition: right 0.3s ease;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .sidebar-header h3 {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .sidebar-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .sidebar-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .sidebar-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-links a:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--accent-color);
+        }
+
+        /* الهيدر والعنوان */
         header {
             text-align: center;
-            padding: 40px 20px 20px;
+            padding: 30px 20px 10px;
         }
 
         header h1 {
@@ -66,7 +222,7 @@
         .reel-section {
             width: 100%;
             overflow: hidden;
-            margin: 25px 0 40px;
+            margin: 25px 0 35px;
             padding: 10px 0;
         }
 
@@ -106,6 +262,55 @@
         @keyframes scroll {
             0% { transform: translateX(0); }
             100% { transform: translateX(50%); }
+        }
+
+        /* بانر الإعلانات والطلبات الخاصة */
+        .promo-banner {
+            max-width: 1100px;
+            margin: 0 auto 35px;
+            padding: 0 20px;
+        }
+
+        .banner-box {
+            background: linear-gradient(135deg, #1c222d, #14171d);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            border-radius: 16px;
+            padding: 22px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .banner-text h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .banner-text p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        .banner-btn {
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .banner-btn:hover {
+            opacity: 0.9;
         }
 
         /* شبكة اللوحات الرئيسية */
@@ -181,15 +386,29 @@
             padding-top: 12px;
         }
 
+        .stats-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .view-stat {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         .like-btn {
             background: transparent;
             border: none;
             color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             transition: color 0.2s, transform 0.15s;
         }
 
@@ -219,7 +438,17 @@
             opacity: 0.9;
         }
 
-        /* نافذة تكبير الصورة */
+        /* رسالة عدم وجود نتائج للبحث */
+        #no-results {
+            display: none;
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* نافذة تكبير الصورة (Lightbox Modal) */
         .lightbox {
             display: none;
             position: fixed;
@@ -260,6 +489,34 @@
 </head>
 <body>
 
+    <!-- الشريط العلوي والتنقل -->
+    <nav class="top-nav">
+        <div class="nav-brand">مرسمي الفني</div>
+        <div class="nav-actions">
+            <button class="icon-btn" onclick="toggleSearch()" title="بحث">🔍</button>
+            <button class="icon-btn" onclick="toggleSidebar()" title="القائمة">☰</button>
+        </div>
+    </nav>
+
+    <!-- شريط البحث الفوري السريع -->
+    <div class="search-container" id="searchContainer">
+        <input type="text" id="searchInput" class="search-input" placeholder="ابحث باسم اللوحة أو الوصف..." onkeyup="filterArtworks()">
+    </div>
+
+    <!-- القائمة الجانبية (Drawer Menu) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>التنقل السريع</h3>
+            <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="#" onclick="toggleSidebar()">🏠 الرئيسية</a></li>
+            <li><a href="#gallery" onclick="toggleSidebar()">🎨 كل الأعمال الفنية</a></li>
+            <li><a href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20رسمة%20خاصة" target="_blank">💬 اطلب رسمتك المخصصة</a></li>
+        </ul>
+    </aside>
+
     <header>
         <h1>مرسمي الفني</h1>
         <p>مجموعة من فواصل الكتب، الاسكتشات، والأعمال اليدوية</p>
@@ -268,88 +525,114 @@
     <!-- شريط العرض الدائري التلقائي -->
     <section class="reel-section">
         <div class="reel-track" id="reel">
-            <div class="reel-item" onclick="openLightbox('starry.jpg')"><img src="starry.jpg" alt="ليلة النجوم"></div>
-            <div class="reel-item" onclick="openLightbox('art2.jpg')"><img src="art2.jpg" alt="أجرام سماوية"></div>
-            <div class="reel-item" onclick="openLightbox('art3.jpg')"><img src="art3.jpg" alt="سكتش شخصيات"></div>
-            <div class="reel-item" onclick="openLightbox('art4.jpg')"><img src="art4.jpg" alt="دفء القهوة"></div>
-            <div class="reel-item" onclick="openLightbox('starry.jpg')"><img src="starry.jpg" alt="ليلة النجوم"></div>
-            <div class="reel-item" onclick="openLightbox('art2.jpg')"><img src="art2.jpg" alt="أجرام سماوية"></div>
-            <div class="reel-item" onclick="openLightbox('art3.jpg')"><img src="art3.jpg" alt="سكتش شخصيات"></div>
-            <div class="reel-item" onclick="openLightbox('art4.jpg')"><img src="art4.jpg" alt="دفء القهوة"></div>
+            <div class="reel-item" onclick="openAndTrack('starry.jpg', 'art1')"><img src="starry.jpg" alt="ليلة النجوم"></div>
+            <div class="reel-item" onclick="openAndTrack('art2.jpg', 'art2')"><img src="art2.jpg" alt="أجرام سماوية"></div>
+            <div class="reel-item" onclick="openAndTrack('art3.jpg', 'art3')"><img src="art3.jpg" alt="سكتش شخصيات"></div>
+            <div class="reel-item" onclick="openAndTrack('art4.jpg', 'art4')"><img src="art4.jpg" alt="دفء القهوة"></div>
+            <div class="reel-item" onclick="openAndTrack('starry.jpg', 'art1')"><img src="starry.jpg" alt="ليلة النجوم"></div>
+            <div class="reel-item" onclick="openAndTrack('art2.jpg', 'art2')"><img src="art2.jpg" alt="أجرام سماوية"></div>
+            <div class="reel-item" onclick="openAndTrack('art3.jpg', 'art3')"><img src="art3.jpg" alt="سكتش شخصيات"></div>
+            <div class="reel-item" onclick="openAndTrack('art4.jpg', 'art4')"><img src="art4.jpg" alt="دفء القهوة"></div>
+        </div>
+    </section>
+
+    <!-- بانر ترويجي للطلبات المخصصة (البديل المالي والأفضل من الإعلانات) -->
+    <section class="promo-banner">
+        <div class="banner-box">
+            <div class="banner-text">
+                <h4>✨ طلبات خاصة ورسم مخصص</h4>
+                <p>هل تبحث عن فاصل كتاب باسمك أو سكتش لشخصيتك المفضلة؟ ننفذها لك يدوياً بأعلى جودة.</p>
+            </div>
+            <a class="banner-btn" href="https://wa.me/966508659452?text=مرحباً،%20أود%20الاستفسار%20عن%20تنفيذ%20طلب%20رسم%20مخصص" target="_blank">
+                اطلب عملك الآن 💬
+            </a>
         </div>
     </section>
 
     <!-- المعرض الأساسي للأعمال -->
-    <main class="gallery-container">
+    <main class="gallery-container" id="gallery">
 
         <!-- اللوحة 1 -->
-        <article class="art-card">
-            <div class="image-wrapper" onclick="openLightbox('starry.jpg')">
+        <article class="art-card" data-title="فاصل ليلة النجوم فان جوخ" data-desc="رسم يدوي لفاصل كتاب مستوحى من لوحة فان جوخ الخالدة بألوان زاهية وتفاصيل ليلية آسرة">
+            <div class="image-wrapper" onclick="openAndTrack('starry.jpg', 'art1')">
                 <img src="starry.jpg" alt="فاصل: ليلة النجوم">
             </div>
             <div class="card-content">
                 <h3>فاصل: ليلة النجوم</h3>
                 <p>رسم يدوي لفاصل كتاب مستوحى من لوحة فان جوخ الخالدة بألوان زاهية وتفاصيل ليلية آسرة.</p>
                 <div class="card-actions">
-                    <button class="like-btn" id="btn-art1" onclick="toggleLike('art1')">
-                        <span class="heart">🤍</span> <span class="count" id="count-art1">0</span>
-                    </button>
+                    <div class="stats-group">
+                        <button class="like-btn" id="btn-art1" onclick="toggleLike('art1')">
+                            <span class="heart">🤍</span> <span class="count" id="count-art1">0</span>
+                        </button>
+                        <span class="view-stat">👁️ <span id="views-art1">0</span></span>
+                    </div>
                     <a class="order-btn" href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20أو%20الاستفسار%20عن%20فاصل%20ليلة%20النجوم" target="_blank">طلب عبر واتساب</a>
                 </div>
             </div>
         </article>
 
         <!-- اللوحة 2 -->
-        <article class="art-card">
-            <div class="image-wrapper" onclick="openLightbox('art2.jpg')">
+        <article class="art-card" data-title="فاصل أجرام سماوية قمر شمس فلك" data-desc="تناغم فلكي بين الشمس والقمر والمدارات الكونية بأسلوب أبيض ناصع على خلفية سوداء داكنة">
+            <div class="image-wrapper" onclick="openAndTrack('art2.jpg', 'art2')">
                 <img src="art2.jpg" alt="فاصل: أجرام سماوية">
             </div>
             <div class="card-content">
                 <h3>فاصل: أجرام سماوية</h3>
                 <p>تناغم فلكي بين الشمس والقمر والمدارات الكونية بأسلوب أبيض ناصع على خلفية سوداء داكنة.</p>
                 <div class="card-actions">
-                    <button class="like-btn" id="btn-art2" onclick="toggleLike('art2')">
-                        <span class="heart">🤍</span> <span class="count" id="count-art2">0</span>
-                    </button>
+                    <div class="stats-group">
+                        <button class="like-btn" id="btn-art2" onclick="toggleLike('art2')">
+                            <span class="heart">🤍</span> <span class="count" id="count-art2">0</span>
+                        </button>
+                        <span class="view-stat">👁️ <span id="views-art2">0</span></span>
+                    </div>
                     <a class="order-btn" href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20أو%20الاستفسار%20عن%20فاصل%20الأجرام%20السماوية" target="_blank">طلب عبر واتساب</a>
                 </div>
             </div>
         </article>
 
         <!-- اللوحة 3 -->
-        <article class="art-card">
-            <div class="image-wrapper" onclick="openLightbox('art3.jpg')">
+        <article class="art-card" data-title="سكتش شخصيات متنوعة انمي كرتون رسم حبر" data-desc="كولاج مليء بالحيوية يجمع شخصيات أنمي وكارتون مفضلة بتفاصيل حبر دقيقة ولمسات لطيفة">
+            <div class="image-wrapper" onclick="openAndTrack('art3.jpg', 'art3')">
                 <img src="art3.jpg" alt="سكتش شخصيات متنوعة">
             </div>
             <div class="card-content">
                 <h3>سكتش شخصيات متنوعة</h3>
                 <p>كولاج مليء بالحيوية يجمع شخصيات أنمي وكارتون مفضلة بتفاصيل حبر دقيقة ولمسات لطيفة.</p>
                 <div class="card-actions">
-                    <button class="like-btn" id="btn-art3" onclick="toggleLike('art3')">
-                        <span class="heart">🤍</span> <span class="count" id="count-art3">0</span>
-                    </button>
+                    <div class="stats-group">
+                        <button class="like-btn" id="btn-art3" onclick="toggleLike('art3')">
+                            <span class="heart">🤍</span> <span class="count" id="count-art3">0</span>
+                        </button>
+                        <span class="view-stat">👁️ <span id="views-art3">0</span></span>
+                    </div>
                     <a class="order-btn" href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20أو%20الاستفسار%20عن%20سكتش%20الشخصيات" target="_blank">طلب عبر واتساب</a>
                 </div>
             </div>
         </article>
 
         <!-- اللوحة 4 -->
-        <article class="art-card">
-            <div class="image-wrapper" onclick="openLightbox('art4.jpg')">
+        <article class="art-card" data-title="دفء القهوة رسم رصاص تظليل" data-desc="رسم وتظليل بالرصاص يجسد هدوء اللحظة واحتضان كوب قهوة ساخن على أوراق نوت بوك">
+            <div class="image-wrapper" onclick="openAndTrack('art4.jpg', 'art4')">
                 <img src="art4.jpg" alt="دفء القهوة">
             </div>
             <div class="card-content">
                 <h3>دفء القهوة</h3>
                 <p>رسم وتظليل بالرصاص يجسد هدوء اللحظة واحتضان كوب قهوة ساخن على أوراق نوت بوك.</p>
                 <div class="card-actions">
-                    <button class="like-btn" id="btn-art4" onclick="toggleLike('art4')">
-                        <span class="heart">🤍</span> <span class="count" id="count-art4">0</span>
-                    </button>
+                    <div class="stats-group">
+                        <button class="like-btn" id="btn-art4" onclick="toggleLike('art4')">
+                            <span class="heart">🤍</span> <span class="count" id="count-art4">0</span>
+                        </button>
+                        <span class="view-stat">👁️ <span id="views-art4">0</span></span>
+                    </div>
                     <a class="order-btn" href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20أو%20الاستفسار%20عن%20رسمة%20دفء%20القهوة" target="_blank">طلب عبر واتساب</a>
                 </div>
             </div>
         </article>
 
+        <div id="no-results">لم نجد أي عمل يطابق بحثك 🎨</div>
     </main>
 
     <!-- نافذة تكبير الصورة (Lightbox Modal) -->
@@ -358,12 +641,12 @@
         <img id="lightbox-img" src="" alt="عرض مكبر">
     </div>
 
-    <!-- مكتبات فايربيس المباشرة -->
+    <!-- مكتبات فايربيس -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <script>
-        // إعدادات مشروعك في Firebase
+        // إعدادات Firebase الخاصة بمشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyDr7qOjMhw-ZavBiYsZNVwtWJPqUe6OSeg",
             authDomain: "art-portfolio-827aa.firebaseapp.com",
@@ -375,52 +658,51 @@
             measurementId: "G-LF8K28PS8Y"
         };
 
-        // تهيئة فايربيس
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         const artItems = ['art1', 'art2', 'art3', 'art4'];
 
-        // مزامنة العدادات الحية من قاعدة البيانات
-        function initFirebaseLikes() {
+        // مزامنة اللايكات والمشاهدات من قاعدة البيانات
+        function initFirebaseStats() {
             artItems.forEach(id => {
                 const countElem = document.getElementById('count-' + id);
+                const viewsElem = document.getElementById('views-' + id);
                 const btnElem = document.getElementById('btn-' + id);
                 const isLiked = localStorage.getItem('isLiked_' + id) === 'true';
 
-                // ضبط شكل الزر محلياً إذا كان الزائر معجباً باللوحة مسبقاً
                 if (isLiked && btnElem) {
                     btnElem.classList.add('liked');
                     btnElem.querySelector('.heart').innerText = '❤️';
                 }
 
-                // استماع لحظي ومباشر لأي زيادة باللايكات من أي جهاز في العالم
+                // استماع لحظي لعدد الإعجابات
                 db.ref('likes/' + id).on('value', (snapshot) => {
-                    const currentCount = snapshot.val() || 0;
-                    if (countElem) {
-                        countElem.innerText = currentCount;
-                    }
+                    if (countElem) countElem.innerText = snapshot.val() || 0;
+                });
+
+                // استماع لحظي لعدد المشاهدات
+                db.ref('views/' + id).on('value', (snapshot) => {
+                    if (viewsElem) viewsElem.innerText = snapshot.val() || 0;
                 });
             });
         }
 
-        // دالة الضغط على زر الإعجاب
+        // تفاعل زر الإعجاب
         function toggleLike(id) {
             const btn = document.getElementById('btn-' + id);
             const isLiked = localStorage.getItem('isLiked_' + id) === 'true';
             const artRef = db.ref('likes/' + id);
 
             if (!isLiked) {
-                // زيادة العداد في قاعدة البيانات السحابية
-                artRef.transaction((current) => (current || 0) + 1);
+                artRef.transaction((c) => (c || 0) + 1);
                 localStorage.setItem('isLiked_' + id, 'true');
                 if (btn) {
                     btn.classList.add('liked');
                     btn.querySelector('.heart').innerText = '❤️';
                 }
             } else {
-                // إنقاص العداد إذا ألغى الإعجاب
-                artRef.transaction((current) => Math.max(0, (current || 0) - 1));
+                artRef.transaction((c) => Math.max(0, (c || 0) - 1));
                 localStorage.setItem('isLiked_' + id, 'false');
                 if (btn) {
                     btn.classList.remove('liked');
@@ -429,7 +711,49 @@
             }
         }
 
-        // تحكم نافذة العرض المكبر (Lightbox)
+        // تسجيل مشاهدة حية عند الضغط على الصورة وتكبيرها
+        function openAndTrack(src, id) {
+            openLightbox(src);
+            // زيادة المشاهدات في Firebase
+            db.ref('views/' + id).transaction((current) => (current || 0) + 1);
+        }
+
+        // وظائف البحث الفوري
+        function toggleSearch() {
+            const container = document.getElementById('searchContainer');
+            container.classList.toggle('active');
+            if (container.classList.contains('active')) {
+                document.getElementById('searchInput').focus();
+            }
+        }
+
+        function filterArtworks() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const cards = document.querySelectorAll('.art-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                const desc = card.getAttribute('data-desc').toLowerCase();
+
+                if (title.includes(query) || desc.includes(query)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('no-results').style.display = (visibleCount === 0) ? 'block' : 'none';
+        }
+
+        // التحكم في القائمة الجانبية (☰)
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
+
+        // نافذة تكبير الصورة (Lightbox)
         function openLightbox(src) {
             const modal = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
@@ -441,7 +765,7 @@
             document.getElementById('lightbox').style.display = 'none';
         }
 
-        document.addEventListener('DOMContentLoaded', initFirebaseLikes);
+        document.addEventListener('DOMContentLoaded', initFirebaseStats);
     </script>
 </body>
 </html>
