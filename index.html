@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض لوحاتي الفنية | Art Portfolio</title>
+    <title>مرسمي الفني | الرئيسية</title>
 
-    <!-- وسوم المعاينة لـ WhatsApp ومواقع التواصل -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="معرض لوحاتي الفنية | Art Portfolio">
     <meta property="og:description" content="مجموعة من فواصل الكتب، الاسكتشات، والأعمال اليدوية الفنية.">
@@ -41,7 +40,6 @@
             padding-bottom: 60px;
         }
 
-        /* الشريط العلوي الثابت */
         .top-nav {
             position: sticky;
             top: 0;
@@ -61,12 +59,13 @@
             background: linear-gradient(90deg, #f39c12, #e74c3c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-decoration: none;
         }
 
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .icon-btn {
@@ -79,8 +78,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
+            text-decoration: none;
             transition: 0.2s;
         }
 
@@ -88,7 +88,7 @@
             background: rgba(255,255,255,0.12);
         }
 
-        /* شريط البحث المنبثق */
+        /* شريط البحث المنبثق لتحويل الزائر لصفحة المعرض */
         .search-container {
             display: none;
             padding: 15px 20px 0;
@@ -100,8 +100,13 @@
             display: block;
         }
 
+        .search-form {
+            display: flex;
+            gap: 8px;
+        }
+
         .search-input {
-            width: 100%;
+            flex-grow: 1;
             padding: 12px 16px;
             border-radius: 10px;
             background: var(--card-bg);
@@ -109,14 +114,23 @@
             color: white;
             font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         .search-input:focus {
             border-color: var(--accent-color);
         }
 
-        /* القائمة الجانبية (Drawer Sidebar) */
+        .search-submit-btn {
+            background: var(--accent-color);
+            border: none;
+            color: #fff;
+            padding: 0 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* القائمة الجانبية */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -155,7 +169,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             padding-bottom: 12px;
             border-bottom: 1px solid rgba(255,255,255,0.08);
         }
@@ -177,7 +191,7 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         .sidebar-links a {
@@ -197,7 +211,6 @@
             color: var(--accent-color);
         }
 
-        /* الهيدر والعنوان */
         header {
             text-align: center;
             padding: 30px 20px 10px;
@@ -206,7 +219,6 @@
         header h1 {
             font-size: 2.2rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
             margin-bottom: 8px;
             background: linear-gradient(90deg, #f39c12, #e74c3c);
             -webkit-background-clip: text;
@@ -218,7 +230,6 @@
             font-size: 1rem;
         }
 
-        /* شريط العرض المتحرك تلقائياً */
         .reel-section {
             width: 100%;
             overflow: hidden;
@@ -264,7 +275,6 @@
             100% { transform: translateX(50%); }
         }
 
-        /* بانر الإعلانات والطلبات الخاصة */
         .promo-banner {
             max-width: 1100px;
             margin: 0 auto 35px;
@@ -306,14 +316,28 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: opacity 0.2s;
         }
 
-        .banner-btn:hover {
-            opacity: 0.9;
+        .section-header {
+            max-width: 1100px;
+            margin: 0 auto 18px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* شبكة اللوحات الرئيسية */
+        .section-header h2 {
+            font-size: 1.4rem;
+        }
+
+        .all-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
         .gallery-container {
             max-width: 1100px;
             margin: 0 auto;
@@ -431,24 +455,30 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: opacity 0.2s;
         }
 
-        .order-btn:hover {
-            opacity: 0.9;
-        }
-
-        /* رسالة عدم وجود نتائج للبحث */
-        #no-results {
-            display: none;
+        .explore-more-wrap {
             text-align: center;
-            grid-column: 1 / -1;
-            padding: 40px 20px;
-            color: var(--text-muted);
-            font-size: 1.1rem;
+            margin-top: 40px;
         }
 
-        /* نافذة تكبير الصورة (Lightbox Modal) */
+        .explore-more-btn {
+            display: inline-block;
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .explore-more-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+        }
+
         .lightbox {
             display: none;
             position: fixed;
@@ -467,7 +497,6 @@
             max-width: 90%;
             max-height: 80vh;
             border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
 
         .lightbox-close {
@@ -489,21 +518,24 @@
 </head>
 <body>
 
-    <!-- الشريط العلوي والتنقل -->
     <nav class="top-nav">
-        <div class="nav-brand">مرسمي الفني</div>
+        <a href="index.html" class="nav-brand">مرسمي الفني</a>
         <div class="nav-actions">
             <button class="icon-btn" onclick="toggleSearch()" title="بحث">🔍</button>
+            <a href="gallery.html" class="icon-btn" title="كل الأعمال">🎨</a>
             <button class="icon-btn" onclick="toggleSidebar()" title="القائمة">☰</button>
         </div>
     </nav>
 
-    <!-- شريط البحث الفوري السريع -->
+    <!-- بحث يوجه مباشرة إلى صفحة المعرض الكاملة -->
     <div class="search-container" id="searchContainer">
-        <input type="text" id="searchInput" class="search-input" placeholder="ابحث باسم اللوحة أو الوصف..." onkeyup="filterArtworks()">
+        <form class="search-form" action="gallery.html" method="GET">
+            <input type="text" name="search" class="search-input" placeholder="ابحث في كامل المعرض..." required>
+            <button type="submit" class="search-submit-btn">بحث</button>
+        </form>
     </div>
 
-    <!-- القائمة الجانبية (Drawer Menu) -->
+    <!-- القائمة الجانبية -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -511,8 +543,8 @@
             <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
         </div>
         <ul class="sidebar-links">
-            <li><a href="#" onclick="toggleSidebar()">🏠 الرئيسية</a></li>
-            <li><a href="#gallery" onclick="toggleSidebar()">🎨 كل الأعمال الفنية</a></li>
+            <li><a href="index.html">🏠 الرئيسية</a></li>
+            <li><a href="gallery.html">🎨 تصفح كل اللوحات (مع فلاتر)</a></li>
             <li><a href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20رسمة%20خاصة" target="_blank">💬 اطلب رسمتك المخصصة</a></li>
         </ul>
     </aside>
@@ -522,7 +554,6 @@
         <p>مجموعة من فواصل الكتب، الاسكتشات، والأعمال اليدوية</p>
     </header>
 
-    <!-- شريط العرض الدائري التلقائي -->
     <section class="reel-section">
         <div class="reel-track" id="reel">
             <div class="reel-item" onclick="openAndTrack('starry.jpg', 'art1')"><img src="starry.jpg" alt="ليلة النجوم"></div>
@@ -536,7 +567,6 @@
         </div>
     </section>
 
-    <!-- بانر ترويجي للطلبات المخصصة (البديل المالي والأفضل من الإعلانات) -->
     <section class="promo-banner">
         <div class="banner-box">
             <div class="banner-text">
@@ -549,11 +579,15 @@
         </div>
     </section>
 
-    <!-- المعرض الأساسي للأعمال -->
-    <main class="gallery-container" id="gallery">
+    <div class="section-header">
+        <h2>مختارات من أعمالي</h2>
+        <a href="gallery.html" class="all-link">مشاهدة الكل &larr;</a>
+    </div>
 
+    <!-- شبكة اللوحات المختارة -->
+    <main class="gallery-container">
         <!-- اللوحة 1 -->
-        <article class="art-card" data-title="فاصل ليلة النجوم فان جوخ" data-desc="رسم يدوي لفاصل كتاب مستوحى من لوحة فان جوخ الخالدة بألوان زاهية وتفاصيل ليلية آسرة">
+        <article class="art-card">
             <div class="image-wrapper" onclick="openAndTrack('starry.jpg', 'art1')">
                 <img src="starry.jpg" alt="فاصل: ليلة النجوم">
             </div>
@@ -573,7 +607,7 @@
         </article>
 
         <!-- اللوحة 2 -->
-        <article class="art-card" data-title="فاصل أجرام سماوية قمر شمس فلك" data-desc="تناغم فلكي بين الشمس والقمر والمدارات الكونية بأسلوب أبيض ناصع على خلفية سوداء داكنة">
+        <article class="art-card">
             <div class="image-wrapper" onclick="openAndTrack('art2.jpg', 'art2')">
                 <img src="art2.jpg" alt="فاصل: أجرام سماوية">
             </div>
@@ -593,7 +627,7 @@
         </article>
 
         <!-- اللوحة 3 -->
-        <article class="art-card" data-title="سكتش شخصيات متنوعة انمي كرتون رسم حبر" data-desc="كولاج مليء بالحيوية يجمع شخصيات أنمي وكارتون مفضلة بتفاصيل حبر دقيقة ولمسات لطيفة">
+        <article class="art-card">
             <div class="image-wrapper" onclick="openAndTrack('art3.jpg', 'art3')">
                 <img src="art3.jpg" alt="سكتش شخصيات متنوعة">
             </div>
@@ -613,7 +647,7 @@
         </article>
 
         <!-- اللوحة 4 -->
-        <article class="art-card" data-title="دفء القهوة رسم رصاص تظليل" data-desc="رسم وتظليل بالرصاص يجسد هدوء اللحظة واحتضان كوب قهوة ساخن على أوراق نوت بوك">
+        <article class="art-card">
             <div class="image-wrapper" onclick="openAndTrack('art4.jpg', 'art4')">
                 <img src="art4.jpg" alt="دفء القهوة">
             </div>
@@ -631,11 +665,13 @@
                 </div>
             </div>
         </article>
-
-        <div id="no-results">لم نجد أي عمل يطابق بحثك 🎨</div>
     </main>
 
-    <!-- نافذة تكبير الصورة (Lightbox Modal) -->
+    <div class="explore-more-wrap">
+        <a href="gallery.html" class="explore-more-btn">تصفح المعرض الكامل مع الفلاتر 👈</a>
+    </div>
+
+    <!-- نافذة تكبير الصورة -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="lightbox-close">&times;</span>
         <img id="lightbox-img" src="" alt="عرض مكبر">
@@ -646,7 +682,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <script>
-        // إعدادات Firebase الخاصة بمشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyDr7qOjMhw-ZavBiYsZNVwtWJPqUe6OSeg",
             authDomain: "art-portfolio-827aa.firebaseapp.com",
@@ -663,7 +698,6 @@
 
         const artItems = ['art1', 'art2', 'art3', 'art4'];
 
-        // مزامنة اللايكات والمشاهدات من قاعدة البيانات
         function initFirebaseStats() {
             artItems.forEach(id => {
                 const countElem = document.getElementById('count-' + id);
@@ -676,19 +710,16 @@
                     btnElem.querySelector('.heart').innerText = '❤️';
                 }
 
-                // استماع لحظي لعدد الإعجابات
                 db.ref('likes/' + id).on('value', (snapshot) => {
                     if (countElem) countElem.innerText = snapshot.val() || 0;
                 });
 
-                // استماع لحظي لعدد المشاهدات
                 db.ref('views/' + id).on('value', (snapshot) => {
                     if (viewsElem) viewsElem.innerText = snapshot.val() || 0;
                 });
             });
         }
 
-        // تفاعل زر الإعجاب
         function toggleLike(id) {
             const btn = document.getElementById('btn-' + id);
             const isLiked = localStorage.getItem('isLiked_' + id) === 'true';
@@ -711,49 +742,24 @@
             }
         }
 
-        // تسجيل مشاهدة حية عند الضغط على الصورة وتكبيرها
         function openAndTrack(src, id) {
             openLightbox(src);
-            // زيادة المشاهدات في Firebase
             db.ref('views/' + id).transaction((current) => (current || 0) + 1);
         }
 
-        // وظائف البحث الفوري
         function toggleSearch() {
             const container = document.getElementById('searchContainer');
             container.classList.toggle('active');
             if (container.classList.contains('active')) {
-                document.getElementById('searchInput').focus();
+                container.querySelector('input').focus();
             }
         }
 
-        function filterArtworks() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            const cards = document.querySelectorAll('.art-card');
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const title = card.getAttribute('data-title').toLowerCase();
-                const desc = card.getAttribute('data-desc').toLowerCase();
-
-                if (title.includes(query) || desc.includes(query)) {
-                    card.style.display = 'flex';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            document.getElementById('no-results').style.display = (visibleCount === 0) ? 'block' : 'none';
-        }
-
-        // التحكم في القائمة الجانبية (☰)
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('sidebarOverlay').classList.toggle('open');
         }
 
-        // نافذة تكبير الصورة (Lightbox)
         function openLightbox(src) {
             const modal = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
