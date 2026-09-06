@@ -556,14 +556,14 @@
 
     <section class="reel-section">
         <div class="reel-track" id="reel">
-            <div class="reel-item" onclick="openAndTrack('starry.jpg', 'art1')"><img src="starry.jpg" alt="ليلة النجوم"></div>
-            <div class="reel-item" onclick="openAndTrack('art2.jpg', 'art2')"><img src="art2.jpg" alt="أجرام سماوية"></div>
-            <div class="reel-item" onclick="openAndTrack('art3.jpg', 'art3')"><img src="art3.jpg" alt="سكتش شخصيات"></div>
-            <div class="reel-item" onclick="openAndTrack('art4.jpg', 'art4')"><img src="art4.jpg" alt="دفء القهوة"></div>
-            <div class="reel-item" onclick="openAndTrack('starry.jpg', 'art1')"><img src="starry.jpg" alt="ليلة النجوم"></div>
-            <div class="reel-item" onclick="openAndTrack('art2.jpg', 'art2')"><img src="art2.jpg" alt="أجرام سماوية"></div>
-            <div class="reel-item" onclick="openAndTrack('art3.jpg', 'art3')"><img src="art3.jpg" alt="سكتش شخصيات"></div>
-            <div class="reel-item" onclick="openAndTrack('art4.jpg', 'art4')"><img src="art4.jpg" alt="دفء القهوة"></div>
+            <div class="reel-item" onclick="openLightbox('starry.jpg')"><img src="starry.jpg" alt="ليلة النجوم"></div>
+            <div class="reel-item" onclick="openLightbox('art2.jpg')"><img src="art2.jpg" alt="أجرام سماوية"></div>
+            <div class="reel-item" onclick="openLightbox('art3.jpg')"><img src="art3.jpg" alt="سكتش شخصيات"></div>
+            <div class="reel-item" onclick="openLightbox('art4.jpg')"><img src="art4.jpg" alt="دفء القهوة"></div>
+            <div class="reel-item" onclick="openLightbox('starry.jpg')"><img src="starry.jpg" alt="ليلة النجوم"></div>
+            <div class="reel-item" onclick="openLightbox('art2.jpg')"><img src="art2.jpg" alt="أجرام سماوية"></div>
+            <div class="reel-item" onclick="openLightbox('art3.jpg')"><img src="art3.jpg" alt="سكتش شخصيات"></div>
+            <div class="reel-item" onclick="openLightbox('art4.jpg')"><img src="art4.jpg" alt="دفء القهوة"></div>
         </div>
     </section>
 
@@ -587,8 +587,8 @@
     <!-- شبكة اللوحات المختارة -->
     <main class="gallery-container">
         <!-- اللوحة 1 -->
-        <article class="art-card">
-            <div class="image-wrapper" onclick="openAndTrack('starry.jpg', 'art1')">
+        <article class="art-card" data-id="art1">
+            <div class="image-wrapper" onclick="openLightbox('starry.jpg')">
                 <img src="starry.jpg" alt="فاصل: ليلة النجوم">
             </div>
             <div class="card-content">
@@ -607,8 +607,8 @@
         </article>
 
         <!-- اللوحة 2 -->
-        <article class="art-card">
-            <div class="image-wrapper" onclick="openAndTrack('art2.jpg', 'art2')">
+        <article class="art-card" data-id="art2">
+            <div class="image-wrapper" onclick="openLightbox('art2.jpg')">
                 <img src="art2.jpg" alt="فاصل: أجرام سماوية">
             </div>
             <div class="card-content">
@@ -627,8 +627,8 @@
         </article>
 
         <!-- اللوحة 3 -->
-        <article class="art-card">
-            <div class="image-wrapper" onclick="openAndTrack('art3.jpg', 'art3')">
+        <article class="art-card" data-id="art3">
+            <div class="image-wrapper" onclick="openLightbox('art3.jpg')">
                 <img src="art3.jpg" alt="سكتش شخصيات متنوعة">
             </div>
             <div class="card-content">
@@ -647,8 +647,8 @@
         </article>
 
         <!-- اللوحة 4 -->
-        <article class="art-card">
-            <div class="image-wrapper" onclick="openAndTrack('art4.jpg', 'art4')">
+        <article class="art-card" data-id="art4">
+            <div class="image-wrapper" onclick="openLightbox('art4.jpg')">
                 <img src="art4.jpg" alt="دفء القهوة">
             </div>
             <div class="card-content">
@@ -742,11 +742,6 @@
             }
         }
 
-        function openAndTrack(src, id) {
-            openLightbox(src);
-            db.ref('views/' + id).transaction((current) => (current || 0) + 1);
-        }
-
         function toggleSearch() {
             const container = document.getElementById('searchContainer');
             container.classList.toggle('active');
@@ -771,7 +766,44 @@
             document.getElementById('lightbox').style.display = 'none';
         }
 
-        document.addEventListener('DOMContentLoaded', initFirebaseStats);
+        // مراقبة المشاهدات الذكية (مهلة ثانية واحدة + منع التكرار في الجلسة)
+        function setupViewObserver() {
+            const viewTimers = {};
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const card = entry.target;
+                    const id = card.getAttribute('data-id');
+                    if (!id) return;
+
+                    if (entry.isIntersecting) {
+                        // إذا لم يشاهدها في الجلسة الحالية، نبدأ مؤقت ثانية واحدة
+                        if (!sessionStorage.getItem('viewed_' + id)) {
+                            viewTimers[id] = setTimeout(() => {
+                                db.ref('views/' + id).transaction((current) => (current || 0) + 1);
+                                sessionStorage.setItem('viewed_' + id, 'true');
+                                observer.unobserve(card);
+                            }, 1000);
+                        }
+                    } else {
+                        // إلغاء المؤقت في حال التمرير السريع ومغادرة الشاشة قبل مرور ثانية
+                        if (viewTimers[id]) {
+                            clearTimeout(viewTimers[id]);
+                            delete viewTimers[id];
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            document.querySelectorAll('.art-card').forEach(card => observer.observe(card));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initFirebaseStats();
+            setupViewObserver();
+        });
     </script>
 </body>
 </html>
