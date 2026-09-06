@@ -279,8 +279,8 @@
                 <h3>فاصل: ليلة النجوم</h3>
                 <p>رسم يدوي لفاصل كتاب مستوحى من لوحة فان جوخ الخالدة بألوان زاهية وتفاصيل ليلية آسرة.</p>
                 <div class="card-actions">
-                    <button class="like-btn" onclick="toggleLike(this, 'art1')">
-                        <span class="heart">🤍</span> <span class="count">0</span>
+                    <button class="like-btn" id="btn-art1" onclick="toggleLike('art1')">
+                        <span class="heart">🤍</span> <span class="count" id="count-art1">0</span>
                     </button>
                     <a class="order-btn" href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20أو%20الاستفسار%20عن%20فاصل%20ليلة%20النجوم" target="_blank">طلب عبر واتساب</a>
                 </div>
@@ -296,8 +296,8 @@
                 <h3>فاصل: أجرام سماوية</h3>
                 <p>تناغم فلكي بين الشمس والقمر والمدارات الكونية بأسلوب أبيض ناصع على خلفية سوداء داكنة.</p>
                 <div class="card-actions">
-                    <button class="like-btn" onclick="toggleLike(this, 'art2')">
-                        <span class="heart">🤍</span> <span class="count">0</span>
+                    <button class="like-btn" id="btn-art2" onclick="toggleLike('art2')">
+                        <span class="heart">🤍</span> <span class="count" id="count-art2">0</span>
                     </button>
                     <a class="order-btn" href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20أو%20الاستفسار%20عن%20فاصل%20الأجرام%20السماوية" target="_blank">طلب عبر واتساب</a>
                 </div>
@@ -313,8 +313,8 @@
                 <h3>سكتش شخصيات متنوعة</h3>
                 <p>كولاج مليء بالحيوية يجمع شخصيات أنمي وكارتون مفضلة بتفاصيل حبر دقيقة ولمسات لطيفة.</p>
                 <div class="card-actions">
-                    <button class="like-btn" onclick="toggleLike(this, 'art3')">
-                        <span class="heart">🤍</span> <span class="count">0</span>
+                    <button class="like-btn" id="btn-art3" onclick="toggleLike('art3')">
+                        <span class="heart">🤍</span> <span class="count" id="count-art3">0</span>
                     </button>
                     <a class="order-btn" href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20أو%20الاستفسار%20عن%20سكتش%20الشخصيات" target="_blank">طلب عبر واتساب</a>
                 </div>
@@ -330,8 +330,8 @@
                 <h3>دفء القهوة</h3>
                 <p>رسم وتظليل بالرصاص يجسد هدوء اللحظة واحتضان كوب قهوة ساخن على أوراق نوت بوك.</p>
                 <div class="card-actions">
-                    <button class="like-btn" onclick="toggleLike(this, 'art4')">
-                        <span class="heart">🤍</span> <span class="count">0</span>
+                    <button class="like-btn" id="btn-art4" onclick="toggleLike('art4')">
+                        <span class="heart">🤍</span> <span class="count" id="count-art4">0</span>
                     </button>
                     <a class="order-btn" href="https://wa.me/966508659452?text=مرحباً،%20أرغب%20في%20طلب%20أو%20الاستفسار%20عن%20رسمة%20دفء%20القهوة" target="_blank">طلب عبر واتساب</a>
                 </div>
@@ -346,43 +346,78 @@
         <img id="lightbox-img" src="" alt="عرض مكبر">
     </div>
 
+    <!-- مكتبات فايربيس المباشرة -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <script>
-        function initLikes() {
-            ['art1', 'art2', 'art3', 'art4'].forEach(id => {
-                const count = localStorage.getItem('likes_' + id) || 0;
+        // إعدادات مشروعك في Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDr7qOjMhw-ZavBiYsZNVwtWJPqUe6OSeg",
+            authDomain: "art-portfolio-827aa.firebaseapp.com",
+            databaseURL: "https://art-portfolio-827aa-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "art-portfolio-827aa",
+            storageBucket: "art-portfolio-827aa.firebasestorage.app",
+            messagingSenderId: "713552054715",
+            appId: "1:713552054715:web:799c98fc94d3a171641c9e",
+            measurementId: "G-LF8K28PS8Y"
+        };
+
+        // تهيئة فايربيس
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const artItems = ['art1', 'art2', 'art3', 'art4'];
+
+        // مزامنة العدادات الحية من قاعدة البيانات
+        function initFirebaseLikes() {
+            artItems.forEach(id => {
+                const countElem = document.getElementById('count-' + id);
+                const btnElem = document.getElementById('btn-' + id);
                 const isLiked = localStorage.getItem('isLiked_' + id) === 'true';
-                
-                const btn = document.querySelector(`[onclick*="'${id}'"]`);
-                if (btn) {
-                    btn.querySelector('.count').innerText = count;
-                    if (isLiked) {
-                        btn.classList.add('liked');
-                        btn.querySelector('.heart').innerText = '❤️';
-                    }
+
+                // ضبط شكل الزر محلياً إذا كان الزائر معجباً باللوحة مسبقاً
+                if (isLiked && btnElem) {
+                    btnElem.classList.add('liked');
+                    btnElem.querySelector('.heart').innerText = '❤️';
                 }
+
+                // استماع لحظي ومباشر لأي زيادة باللايكات من أي جهاز في العالم
+                db.ref('likes/' + id).on('value', (snapshot) => {
+                    const currentCount = snapshot.val() || 0;
+                    if (countElem) {
+                        countElem.innerText = currentCount;
+                    }
+                });
             });
         }
 
-        function toggleLike(btn, id) {
-            let count = parseInt(localStorage.getItem('likes_' + id) || 0);
-            let isLiked = localStorage.getItem('isLiked_' + id) === 'true';
+        // دالة الضغط على زر الإعجاب
+        function toggleLike(id) {
+            const btn = document.getElementById('btn-' + id);
+            const isLiked = localStorage.getItem('isLiked_' + id) === 'true';
+            const artRef = db.ref('likes/' + id);
 
             if (!isLiked) {
-                count++;
-                btn.classList.add('liked');
-                btn.querySelector('.heart').innerText = '❤️';
+                // زيادة العداد في قاعدة البيانات السحابية
+                artRef.transaction((current) => (current || 0) + 1);
                 localStorage.setItem('isLiked_' + id, 'true');
+                if (btn) {
+                    btn.classList.add('liked');
+                    btn.querySelector('.heart').innerText = '❤️';
+                }
             } else {
-                count = Math.max(0, count - 1);
-                btn.classList.remove('liked');
-                btn.querySelector('.heart').innerText = '🤍';
+                // إنقاص العداد إذا ألغى الإعجاب
+                artRef.transaction((current) => Math.max(0, (current || 0) - 1));
                 localStorage.setItem('isLiked_' + id, 'false');
+                if (btn) {
+                    btn.classList.remove('liked');
+                    btn.querySelector('.heart').innerText = '🤍';
+                }
             }
-
-            localStorage.setItem('likes_' + id, count);
-            btn.querySelector('.count').innerText = count;
         }
 
+        // تحكم نافذة العرض المكبر (Lightbox)
         function openLightbox(src) {
             const modal = document.getElementById('lightbox');
             const img = document.getElementById('lightbox-img');
@@ -394,7 +429,7 @@
             document.getElementById('lightbox').style.display = 'none';
         }
 
-        document.addEventListener('DOMContentLoaded', initLikes);
+        document.addEventListener('DOMContentLoaded', initFirebaseLikes);
     </script>
 </body>
 </html>
