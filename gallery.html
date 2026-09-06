@@ -326,7 +326,7 @@
         <article class="art-card" id="card-art1" data-id="art1" data-date="2026-03-01" data-likes="0" data-views="0"
                  data-title="فاصل ليلة النجوم فان جوخ" 
                  data-desc="رسم يدوي لفاصل كتاب مستوحى من لوحة فان جوخ الخالدة بألوان زاهية وتفاصيل ليلية آسرة">
-            <div class="image-wrapper" onclick="openAndTrack('starry.jpg', 'art1')">
+            <div class="image-wrapper" onclick="openLightbox('starry.jpg')">
                 <img src="starry.jpg" alt="فاصل: ليلة النجوم">
             </div>
             <div class="card-content">
@@ -348,7 +348,7 @@
         <article class="art-card" id="card-art2" data-id="art2" data-date="2026-03-02" data-likes="0" data-views="0"
                  data-title="فاصل أجرام سماوية قمر شمس فلك" 
                  data-desc="تناغم فلكي بين الشمس والقمر والمدارات الكونية بأسلوب أبيض ناصع على خلفية سوداء داكنة">
-            <div class="image-wrapper" onclick="openAndTrack('art2.jpg', 'art2')">
+            <div class="image-wrapper" onclick="openLightbox('art2.jpg')">
                 <img src="art2.jpg" alt="فاصل: أجرام سماوية">
             </div>
             <div class="card-content">
@@ -370,7 +370,7 @@
         <article class="art-card" id="card-art3" data-id="art3" data-date="2026-03-03" data-likes="0" data-views="0"
                  data-title="سكتش شخصيات متنوعة انمي كرتون حبر" 
                  data-desc="كولاج مليء بالحيوية يجمع شخصيات أنمي وكارتون مفضلة بتفاصيل حبر دقيقة ولمسات لطيفة">
-            <div class="image-wrapper" onclick="openAndTrack('art3.jpg', 'art3')">
+            <div class="image-wrapper" onclick="openLightbox('art3.jpg')">
                 <img src="art3.jpg" alt="سكتش شخصيات متنوعة">
             </div>
             <div class="card-content">
@@ -392,7 +392,7 @@
         <article class="art-card" id="card-art4" data-id="art4" data-date="2026-03-04" data-likes="0" data-views="0"
                  data-title="دفء القهوة رسم رصاص تظليل كوب" 
                  data-desc="رسم وتظليل بالرصاص يجسد هدوء اللحظة واحتضان كوب قهوة ساخن على أوراق نوت بوك">
-            <div class="image-wrapper" onclick="openAndTrack('art4.jpg', 'art4')">
+            <div class="image-wrapper" onclick="openLightbox('art4.jpg')">
                 <img src="art4.jpg" alt="دفء القهوة">
             </div>
             <div class="card-content">
@@ -500,11 +500,6 @@
             }
         }
 
-        function openAndTrack(src, id) {
-            openLightbox(src);
-            db.ref('views/' + id).transaction((current) => (current || 0) + 1);
-        }
-
         // البحث الفوري
         function filterArtworks() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -542,12 +537,10 @@
                 } else if (type === 'views') {
                     return parseInt(b.getAttribute('data-views') || 0) - parseInt(a.getAttribute('data-views') || 0);
                 } else {
-                    // الأحدث تاريخياً
                     return new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date'));
                 }
             });
 
-            // إعادة ترتيب العناصر في الصفحة
             cards.forEach(card => container.appendChild(card));
         }
 
@@ -562,7 +555,44 @@
             document.getElementById('lightbox').style.display = 'none';
         }
 
-        document.addEventListener('DOMContentLoaded', initFirebaseStats);
+        // مراقبة المشاهدات الذكية (مهلة ثانية واحدة + منع التكرار في الجلسة)
+        function setupViewObserver() {
+            const viewTimers = {};
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const card = entry.target;
+                    const id = card.getAttribute('data-id');
+                    if (!id) return;
+
+                    if (entry.isIntersecting) {
+                        // إذا لم يشاهدها الزائر في هذه الجلسة، نبدأ مؤقت ثانية واحدة
+                        if (!sessionStorage.getItem('viewed_' + id)) {
+                            viewTimers[id] = setTimeout(() => {
+                                db.ref('views/' + id).transaction((current) => (current || 0) + 1);
+                                sessionStorage.setItem('viewed_' + id, 'true');
+                                observer.unobserve(card);
+                            }, 1000);
+                        }
+                    } else {
+                        // إلغاء المؤقت في حال التمرير السريع ومغادرة الشاشة قبل مرور ثانية
+                        if (viewTimers[id]) {
+                            clearTimeout(viewTimers[id]);
+                            delete viewTimers[id];
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            document.querySelectorAll('.art-card').forEach(card => observer.observe(card));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initFirebaseStats();
+            setupViewObserver();
+        });
     </script>
 </body>
 </html>
